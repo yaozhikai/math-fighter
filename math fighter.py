@@ -3,28 +3,11 @@
 """
 Boxing Math Game v3 — Two-Digit Subtraction with Borrowing + Round Limit
 
-<<<<<<< HEAD
-Key Features
-------------
-- Two players enter names; each starts with random HP in [80, 120].
-- Each round, attacker uses a RANDOM-NAMED attack with base damage in [11, 49].
-- Defender "rolls" defense in [0, 50] with a bias toward smaller numbers (big defenses are rarer).
-- If defense >= attack: auto "Avoid!" / "Perfect Defense!" (skip math) and go to the next round.
-- Otherwise, player answers two subtraction prompts:
-    1) Actual damage = max(0, base - defense)
-    2) Remaining HP = max(0, life_before - actual_damage)
-  * You get up to 3 tries; then the correct answer is revealed.
-- Borrowing Focus: the program tries to generate problems that require borrowing
-  in the ones place for at least one of the subtractions (within a capped number of rerolls).
-- Round Limit: stop after MAX_ROUNDS if no knockout; decide winner by remaining HP
-  (optional sudden-death tiebreaker).
-=======
 Changes (per user request):
 1) Player name limited to 3 characters.
 2) Difficulty seeding: the game adapts to accuracy in real-time.
    - We track correctness and compute a difficulty level 1–5 from accuracy.
    - Higher level → more likely to generate borrow-required pairs with larger gaps.
->>>>>>> 3526576 (a. add readme)
 
 CLI Options
 -----------
@@ -45,11 +28,7 @@ ATTACK_RANGE = (11, 49)      # inclusive
 DEFENSE_RANGE = (0, 50)      # inclusive
 LIFE_RANGE = (80, 120)       # inclusive
 MAX_ATTEMPTS = 3
-<<<<<<< HEAD
-MAX_REROLLS_FOR_BORROW = 12  # attempts to create a borrow-friendly subtraction
-=======
 MAX_REROLLS_FOR_BORROW = 12  # base attempts to create a borrow-friendly subtraction
->>>>>>> 3526576 (a. add readme)
 
 ATTACK_NAMES: List[str] = [
     "Comet Cross", "Dragon Hook", "Phantom Jab", "Thunder Uppercut", "Shadow Step",
@@ -75,8 +54,6 @@ class Style:
             return text
         return f"{color}{text}{self.reset}"
 
-<<<<<<< HEAD
-=======
 # -------------------- Adaptive Difficulty --------------------
 
 class Adaptive:
@@ -101,7 +78,6 @@ class Adaptive:
 
 ADAPT = Adaptive()
 
->>>>>>> 3526576 (a. add readme)
 # -------------------- Core Mechanics --------------------
 
 def weighted_defense_roll(low: int, high: int) -> int:
@@ -140,8 +116,6 @@ def ask_int_with_attempts(prompt: str, correct_value: int, max_attempts: int, st
     print(style.wrap(f"📘 The correct answer is: {correct_value}\n", style.blue))
 
 
-<<<<<<< HEAD
-=======
 def ask_int_with_attempts_bool(prompt: str, correct_value: int, max_attempts: int, style: Style) -> bool:
     """Same as ask_int_with_attempts, but returns True/False for correctness to feed Adaptive."""
     attempts = 0
@@ -169,7 +143,6 @@ def ask_int_with_attempts_bool(prompt: str, correct_value: int, max_attempts: in
     return False
 
 
->>>>>>> 3526576 (a. add readme)
 def roll_attack() -> Tuple[str, int]:
     name = random.choice(ATTACK_NAMES)
     dmg = random.randint(*ATTACK_RANGE)
@@ -180,8 +153,6 @@ def roll_defense() -> int:
     return weighted_defense_roll(*DEFENSE_RANGE)
 
 
-<<<<<<< HEAD
-=======
 def force_borrow_pair(level: int) -> Tuple[int, int]:
     """Construct (base, defense) that guarantees ones-place borrow; harder with higher level."""
     # Make base skew higher and borrow gap larger as level increases
@@ -201,44 +172,26 @@ def force_borrow_pair(level: int) -> Tuple[int, int]:
     return base, defense
 
 
->>>>>>> 3526576 (a. add readme)
 def ensure_borrow_case(base: int, defense: int, life_before: int) -> Tuple[int, int]:
     """
     Encourage at least one borrowing scenario in the ones place:
       A) base%10 < defense%10  (for base > defense)
       B) life_before%10 < (base - defense)%10
     We attempt rerolls a few times unless base <= defense (which will auto-avoid).
-<<<<<<< HEAD
-=======
     Difficulty: more rerolls when level is higher.
->>>>>>> 3526576 (a. add readme)
     """
     if base <= defense:
         return base, defense
 
-<<<<<<< HEAD
-    for _ in range(MAX_REROLLS_FOR_BORROW):
-        actual_damage = base - defense
-        # If either subtraction forces a borrow, accept
-        if (base % 10) < (defense % 10) or (life_before % 10) < (actual_damage % 10):
-            return base, defense
-
-        # Otherwise adjust; randomly reroll base or defense
-=======
     extra = (ADAPT.level - 1) * 4  # add more attempts as difficulty rises
     for _ in range(MAX_REROLLS_FOR_BORROW + extra):
         actual_damage = base - defense
         if (base % 10) < (defense % 10) or (life_before % 10) < (actual_damage % 10):
             return base, defense
->>>>>>> 3526576 (a. add readme)
         if random.random() < 0.5:
             base = random.randint(*ATTACK_RANGE)
         else:
             defense = roll_defense()
-<<<<<<< HEAD
-
-=======
->>>>>>> 3526576 (a. add readme)
         if base <= defense:
             return base, defense
     return base, defense
@@ -252,8 +205,6 @@ def print_status(p1_name: str, p1_hp: int, p2_name: str, p2_hp: int, style: Styl
     print(f"{style.wrap('🔹 ' + p1_name + f': {p1_hp} HP', style.blue)} | "
           f"{style.wrap('🔸 ' + p2_name + f': {p2_hp} HP', style.yellow)}\n")
 
-<<<<<<< HEAD
-=======
 # -------------------- Difficulty-aware pairing --------------------
 
 def generate_pair(life_before: int) -> Tuple[str, int, int]:
@@ -267,7 +218,6 @@ def generate_pair(life_before: int) -> Tuple[str, int, int]:
     else:
         base, defense = ensure_borrow_case(base, defense, life_before)
     return atk_name, base, defense
->>>>>>> 3526576 (a. add readme)
 
 # -------------------- Game Loop --------------------
 
@@ -275,16 +225,11 @@ def play_game(max_rounds: int, sudden_death: bool, style: Style) -> None:
     print(style.wrap("🥊 Boxing Math Game — Two-Digit Subtraction (Borrowing) v3", style.bold))
     print("Type 'quit' or 'exit' at any input to end the game.\n")
 
-<<<<<<< HEAD
-    user1 = input("Enter Player 1 name: ").strip() or "Player 1"
-    user2 = input("Enter Player 2 name: ").strip() or "Player 2"
-=======
     # Player names (limit to 3 characters)
     user1 = input("Enter Player 1 name (max 3 chars): ").strip() or "P1"
     user2 = input("Enter Player 2 name (max 3 chars): ").strip() or "P2"
     user1 = user1[:3]
     user2 = user2[:3]
->>>>>>> 3526576 (a. add readme)
 
     p1_hp = random.randint(*LIFE_RANGE)
     p2_hp = random.randint(*LIFE_RANGE)
@@ -302,13 +247,7 @@ def play_game(max_rounds: int, sudden_death: bool, style: Style) -> None:
 
         life_before = p1_hp if defender == user1 else p2_hp
 
-<<<<<<< HEAD
-        atk_name, base_dmg = roll_attack()
-        defense = roll_defense()
-        base_dmg, defense = ensure_borrow_case(base_dmg, defense, life_before)
-=======
         atk_name, base_dmg, defense = generate_pair(life_before)
->>>>>>> 3526576 (a. add readme)
 
         print(f"💥 {attacker} uses {atk_name}! Base damage roll: {base_dmg}")
         prompt_enter(f"🛡️  {defender}, press Enter to roll your defense (0–50; big numbers rarer)...")
@@ -328,35 +267,22 @@ def play_game(max_rounds: int, sudden_death: bool, style: Style) -> None:
 
         actual_damage = base_dmg - defense
 
-<<<<<<< HEAD
-        ask_int_with_attempts(
-=======
         ok1 = ask_int_with_attempts_bool(
->>>>>>> 3526576 (a. add readme)
             prompt=f"❓ What is the ACTUAL damage? (base {base_dmg} - defense {defense}, not below 0): ",
             correct_value=actual_damage,
             max_attempts=MAX_ATTEMPTS,
             style=style,
         )
-<<<<<<< HEAD
-
-        expected_remaining = max(0, life_before - actual_damage)
-        ask_int_with_attempts(
-=======
         ADAPT.update(ok1)
 
         expected_remaining = max(0, life_before - actual_damage)
         ok2 = ask_int_with_attempts_bool(
->>>>>>> 3526576 (a. add readme)
             prompt=f"❓ What is {defender}'s REMAINING life? ({life_before} - {actual_damage}, not below 0): ",
             correct_value=expected_remaining,
             max_attempts=MAX_ATTEMPTS,
             style=style,
         )
-<<<<<<< HEAD
-=======
         ADAPT.update(ok2)
->>>>>>> 3526576 (a. add readme)
 
         if defender == user1:
             p1_hp = expected_remaining
@@ -397,13 +323,7 @@ def play_game(max_rounds: int, sudden_death: bool, style: Style) -> None:
         print(style.wrap("⚖️ It's a tie! Entering SUDDEN DEATH: first damaging hit wins...", style.bold))
         # single sudden death attempt
         life_before = p1_hp if defender == user1 else p2_hp
-<<<<<<< HEAD
-        atk_name, base_dmg = roll_attack()
-        defense = roll_defense()
-        base_dmg, defense = ensure_borrow_case(base_dmg, defense, life_before)
-=======
         atk_name, base_dmg, defense = generate_pair(life_before)
->>>>>>> 3526576 (a. add readme)
 
         print(f"💥 {attacker} uses {atk_name}! Base damage roll: {base_dmg}")
         prompt_enter(f"🛡️  {defender}, press Enter to roll your defense (0–50; big numbers rarer)...")
@@ -436,17 +356,10 @@ def play_game(max_rounds: int, sudden_death: bool, style: Style) -> None:
 # -------------------- Entrypoint --------------------
 
 def parse_args(argv: List[str]) -> argparse.Namespace:
-<<<<<<< HEAD
-    p = argparse.ArgumentParser(description="Boxing Math Game v3 — subtraction practice")
-    p.add_argument("--rounds", type=int, default=12, help="Max rounds (default: 12)")
-    p.add_argument("--no-sudden-death", action="store_true", help="Disable sudden-death on tie after max rounds")
-    p.add_argument("--seed", type=int, default=None, help="Set RNG seed for reproducible runs")
-=======
     p = argparse.ArgumentParser(description="Boxing Math Game v3 — subtraction practice (with adaptive difficulty)")
     p.add_argument("--rounds", type=int, default=12, help="Max rounds (default: 12)")
     p.add_argument("--no-sudden-death", action="store_true", help="Disable sudden-death on tie after max rounds")
     p.add_argument("--seed", type=int, default=None, help="Set RNG seed for reproducible gameplay")
->>>>>>> 3526576 (a. add readme)
     p.add_argument("--no-color", action="store_true", help="Disable colored output")
     return p.parse_args(argv)
 
@@ -461,8 +374,4 @@ def main():
 
 
 if __name__ == "__main__":
-<<<<<<< HEAD
     main()
-=======
-    main()
->>>>>>> 3526576 (a. add readme)
