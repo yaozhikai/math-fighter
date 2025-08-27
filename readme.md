@@ -87,7 +87,3 @@ Vik starts with 97 HP.
 ## 📜 License
 
 MIT License — free to fork, adapt, and use for your own math practice or teaching projects.
-
----
-
-👉 This version is **simpler, more accurate, and child-friendly**, while still showing off your adaptive difficulty and boxing theme.
