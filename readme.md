@@ -1,37 +1,41 @@
 # Boxing Math Game 🎲🥊
 
-A fun **two-player subtraction game** with a boxing theme.  
-Built in Python, this game helps practice **two-digit subtraction with borrowing** while simulating boxing rounds.
+A fun **two-player subtraction practice game** wrapped in a boxing theme.
+Built in Python, this game makes **two-digit subtraction with borrowing** exciting and interactive — perfect for kids learning math in a playful way.
 
 ---
 
-## Features
+## ✨ Features
 
-- **Two players**: enter your names (max 3 characters each).
-- **Random boxing mechanics**:
-  - Each round: attacker rolls a named attack (damage 11–49).
-  - Defender rolls defense (0–50, biased toward smaller numbers).
-  - If defense ≥ attack → auto dodge!
-- **Math challenge**:
-  - If not dodged, answer two subtraction problems:
-    1. Actual damage = base – defense
-    2. Remaining HP = defender’s HP – damage
-  - Up to 3 tries each; correct answer revealed after.
-- **Borrowing focus**: problems often require borrowing in ones place.
-- **Adaptive difficulty**:
-  - Tracks your answer accuracy.
-  - Adjusts difficulty level (1–5).
-  - Higher levels increase borrow probability and gap size.
-- **Round limit & winner**:
-  - Defaults to 12 rounds.
-  - Winner decided by KO, HP left, or sudden-death tie-breaker.
-- **Colored terminal output with emojis** (disable with `--no-color`).
+* **Two-player mode**: enter short names (max 3 characters each).
+* **Boxing mechanics**:
+
+  * Each round, the attacker rolls a named attack (damage **11–49**).
+  * Defender rolls defense (**0–50**, weighted toward smaller numbers).
+  * Attacks always resolve (no pure “auto-dodge” rounds).
+* **Math challenges each turn**:
+
+  1. Calculate **actual damage** = attack – defense
+  2. Calculate **remaining HP** = defender’s HP – damage
+
+  * Up to 3 attempts; hints if too high/low; correct answer shown after.
+* **Borrowing focus**: subtraction problems are designed to often require borrowing in the ones place.
+* **Adaptive difficulty**:
+
+  * Tracks player accuracy.
+  * Difficulty level (1–5) adjusts dynamically: higher levels increase borrowing cases and tougher gaps.
+* **Rounds & winner**:
+
+  * Default: **8 rounds** (can be changed with `--rounds`).
+  * Winner decided by KO or by comparing HP at the end.
+* **Colorful output with emojis** for fun and clarity (disable with `--no-color`).
 
 ---
 
-## Installation
+## 🚀 Installation
 
 Clone this repo:
+
 ```bash
 git clone https://github.com/yaozhikai/math-fighter.git
 cd math-fighter
@@ -39,20 +43,25 @@ cd math-fighter
 
 Run with Python 3.8+:
 
+```bash
 python math_fighter.py
+```
 
-Command Line Options
-## Option	Description
---rounds N	Max number of rounds (default 12).
---no-sudden-death	Disable sudden-death tiebreaker.
---seed S	Set RNG seed (for reproducibility).
---no-color	Disable ANSI colors and emojis.
-Example Play
-python math_fighter.py --rounds 5 --seed 42
+---
 
+## ⚙️ Command-Line Options
 
-## Sample round:
+| Option       | Description                           |
+| ------------ | ------------------------------------- |
+| `--rounds N` | Max number of rounds (default: 8).    |
+| `--seed S`   | Set RNG seed (for reproducible runs). |
+| `--no-color` | Disable colored output and emojis.    |
 
+---
+
+## 🎮 Example Play
+
+```text
 🥊 Boxing Math Game — Two-Digit Subtraction (Borrowing) v3
 Type 'quit' or 'exit' at any input to end the game.
 
@@ -67,11 +76,18 @@ Vik starts with 97 HP.
 🔹 Kai: 108 HP | 🔸 Vik: 97 HP
 
 💥 Kai uses Meteor Rush! Base damage roll: 34
-🛡️  Vik, press Enter to roll your defense (0–50; big numbers rarer)...
+🛡️  Vik, press Enter to roll your defense...
 🛡️  Vik defense roll: 21
-❓ What is the ACTUAL damage? (base 34 - defense 21, not below 0):
 
-## License
+❓ What is the ACTUAL damage? (base 34 - defense 21): 
+```
 
-MIT License.
-Feel free to fork and adapt for your own math practice!
+---
+
+## 📜 License
+
+MIT License — free to fork, adapt, and use for your own math practice or teaching projects.
+
+---
+
+👉 This version is **simpler, more accurate, and child-friendly**, while still showing off your adaptive difficulty and boxing theme.
